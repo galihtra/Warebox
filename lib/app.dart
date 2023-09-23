@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:warebox/authentication/authentication.dart';
 import 'package:warebox/home/home.dart';
 import 'package:warebox/login/login.dart';
+import 'package:warebox/onboarding/view/onboarding_1.dart';
 import 'package:warebox/splash/splash.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:warebox/splash/view/splash_page.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -73,7 +75,7 @@ class _AppViewState extends State<AppView> {
                 );
               case AuthenticationStatus.unauthenticated:
                 _navigator.pushAndRemoveUntil<void>(
-                  LoginPage.route(),
+                  Onboarding1.route(),
                   (route) => false,
                 );
               case AuthenticationStatus.unknown:
@@ -84,6 +86,7 @@ class _AppViewState extends State<AppView> {
         );
       },
       onGenerateRoute: (_) => SplashPage.route(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
