@@ -87,6 +87,9 @@ class _AppViewState extends State<AppView> {
       },
       onGenerateRoute: (_) => SplashPage.route(),
       debugShowCheckedModeBanner: false,
+      routes: <String, WidgetBuilder>{
+        '/login': (BuildContext context) => const LoginPage(),
+      },
     );
   }
 }
