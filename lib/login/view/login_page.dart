@@ -47,7 +47,7 @@ class LoginPage extends StatelessWidget {
               Container(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  'Sign in and get your health personalized \nwith our AI Technology.',
+                  'Sign in and get your space personalized \nwith our Warehouse.',
                   style: GoogleFonts.getFont(
                     'Plus Jakarta Sans',
                     fontSize: 16,
