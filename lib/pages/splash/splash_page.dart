@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:warebox/splash/widgets/splash_painter.dart';
+import 'package:warebox/pages/splash/widgets/splash_painter.dart';
 import 'package:warebox/utils/custom_themes.dart';
 import 'package:warebox/utils/dimensions.dart';
 
-import '../../utils/color_resources.dart';
-import '../../utils/images.dart';
+import '../../../utils/color_resources.dart';
+import '../../../utils/images.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);

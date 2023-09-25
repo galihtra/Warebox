@@ -105,12 +105,12 @@ class ColorResources {
     return const Color(0xFFC8E4FF);
   }
 
-  static const Color black = Color(0xff000000);
+  static const Color black = Color(0xff090d1d);
   static const Color white = Color(0xffFFFFFF);
   static const Color lightSkyBlue = Color(0xff8DBFF6);
   static const Color harlequin = Color(0xff3FCC01);
   static const Color cris = Color(0xffE2206B);
-  static const Color grey = Color(0xffF1F1F1);
+  static const Color grey = Color(0xff5d6985);
   static const Color red = Color(0xFFD32F2F);
   static const Color yellow = Color(0xFFFFAA47);
   static const Color hintTextColor = Color(0xff9E9E9E);

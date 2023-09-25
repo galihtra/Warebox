@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:warebox/splash/splash_page.dart';
+import 'package:warebox/pages/auth/sign_in_page.dart';
+import 'package:warebox/pages/splash/splash_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Flutter Demo',
-      home: SplashPage(),
+      home: LoginPage(),
     );
   }
 }
