@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:warebox/utils/custom_themes.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../utils/color_resources.dart';
@@ -75,10 +75,12 @@ class _LoginPageState extends State<LoginPage> {
           padding: const EdgeInsets.all(12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 50),
               Container(
                 alignment: Alignment.topLeft,
+                margin: const EdgeInsets.only(left: 5, right: 5),
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -89,42 +91,51 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 15),
               Container(
                 alignment: Alignment.topLeft,
+                margin: const EdgeInsets.only(left: 5, right: 5),
                 child: const Text(
                     'Sign in and get your space personalized \nwith our Warehouse.',
                     style: titleHeader),
               ),
-              const SizedBox(height: 40),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: Dimensions.marginSizeLarge),
+              const SizedBox(height: 30),
+              Container(
+                alignment: Alignment.topLeft,
                 child: Form(
                   key: _formKeyLogin,
-                  child: ListView(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: Dimensions.paddingSizeSmall),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                          margin: const EdgeInsets.only(
-                              bottom: Dimensions.marginSizeSmall),
-                          child: CustomTextField(
-                            hintText: 'Email',
-                            focusNode: _emailNode,
-                            nextNode: _passNode,
-                            textInputType: TextInputType.emailAddress,
-                            controller: _emailController,
-                          )),
-                      Container(
-                          margin: const EdgeInsets.only(
-                              bottom: Dimensions.marginSizeDefault),
-                          child: CustomPasswordTextField(
-                            hintTxt: 'Password',
-                            textInputAction: TextInputAction.done,
-                            focusNode: _passNode,
-                            controller: _passwordController,
-                          )),
+                        margin: const EdgeInsets.only(left: 5, right: 5),
+                        child: const Text(
+                          'Email Address',
+                          style: titleHeader2,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      CustomTextField(
+                        hintText: 'youremail@gmail.com',
+                        focusNode: _emailNode,
+                        nextNode: _passNode,
+                        textInputType: TextInputType.emailAddress,
+                        controller: _emailController,
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Password',
+                        style: titleHeader2,
+                      ),
+                      const SizedBox(height: 10),
+                      CustomPasswordTextField(
+                        hintTxt: 'Password',
+                        textInputAction: TextInputAction.done,
+                        focusNode: _passNode,
+                        controller: _passwordController,
+                      ),
                       Container(
                         margin: const EdgeInsets.only(
-                            right: Dimensions.marginSizeSmall),
+                          right: Dimensions.marginSizeSmall,
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -136,87 +147,157 @@ class _LoginPageState extends State<LoginPage> {
                                   value: false,
                                   onChanged: (val) {},
                                 ),
-                                const Text('Remember', style: titilliumRegular),
+                                const Text(
+                                  'Remember Me',
+                                  style: titilliumRegular,
+                                ),
                               ],
                             ),
                             InkWell(
                               onTap: () {},
-                              child: Text('Forgot Password',
-                                  style: titilliumRegular.copyWith(
-                                      color: ColorResources.getLightSkyBlue(
-                                          context))),
+                              child: Text(
+                                'Forgot Password',
+                                style: titilliumRegular.copyWith(
+                                  color:
+                                      ColorResources.getLightSkyBlue(context),
+                                ),
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      // Container(
-                      //   margin: const EdgeInsets.only(
-                      //       left: 20, right: 20, bottom: 20, top: 30),
-                      //   child: BlocConsumer<LoginBloc, LoginState>(
-                      //     listener: (context, state) {
-                      //       state.maybeWhen(
-                      //         orElse: () {},
-                      //         loaded: (data) async {
-                      //           await AuthLocalDatasource().saveAuthData(data);
-                      //           Navigator.pushAndRemoveUntil(context,
-                      //               MaterialPageRoute(builder: (context) {
-                      //             return DashboardPage();
-                      //           }), (route) => false);
-                      //         },
-                      //         error: (message) {
-                      //           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      //             content: Text(message),
-                      //             backgroundColor: Colors.red,
-                      //           ));
-                      //         },
-                      //       );
-                      //     },
-                      //     builder: (context, state) {
-                      //       return state.maybeWhen(
-                      //         orElse: () {
-                      //           return CustomButton(
-                      //               onTap: loginUser, buttonText: 'Sign In');
-                      //         },
-                      //         loading: () => const Center(
-                      //           child: CircularProgressIndicator(),
-                      //         ),
-                      //       );
-                      //     },
-                      //   ),
-                      // ),
-                      const SizedBox(width: Dimensions.paddingSizeDefault),
-                      const SizedBox(width: Dimensions.paddingSizeDefault),
-                      Center(
-                          child: Text('OR',
-                              style: titilliumRegular.copyWith(
-                                  fontSize: Dimensions.fontSizeDefault))),
-                      GestureDetector(
-                        onTap: () {
-                          // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          //   return const DashboardPage();
-                          // }));
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(
-                              left: Dimensions.marginSizeAuth,
-                              right: Dimensions.marginSizeAuth,
-                              top: Dimensions.marginSizeAuthSmall),
-                          width: double.infinity,
-                          height: 40,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(6),
+                      const SizedBox(height: 10),
+                      Container(
+                        alignment: Alignment.center,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF2E9496),
+                            minimumSize: const Size(0, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
-                          child: Text('Continue as Guest',
-                              style: titleHeader.copyWith(
-                                  color: ColorResources.getPrimary(context))),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Sign In',
+                                style: pjsExtraBold20,
+                              ),
+                              SizedBox(width: 10),
+                              Icon(Icons.person_2_outlined)
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 50),
+                      Stack(
+                        alignment: const AlignmentDirectional(0, 0),
+                        children: [
+                          Align(
+                            alignment: const AlignmentDirectional(0.00, 0.00),
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0, 12, 0, 12),
+                              child: Container(
+                                width: double.infinity,
+                                height: 2,
+                                decoration: const BoxDecoration(
+                                  color: Color(0xFFE0E3E7),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: const AlignmentDirectional(0.00, 0.00),
+                            child: Container(
+                              width: 70,
+                              height: 32,
+                              decoration: const BoxDecoration(
+                                color: Color(0xFFF2F5F9),
+                              ),
+                              alignment: const AlignmentDirectional(0.00, 0.00),
+                              child: const Text(
+                                'OR',
+                                style: pjsMedium16,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30),
+                      Container(
+                        alignment: Alignment.center,
+                        child: Material(
+                          elevation: 0, // Efek naik ketika tombol ditekan
+                          borderRadius: BorderRadius.circular(12),
+                          color: const Color(0xFFF2F5F9),
+                          child: InkWell(
+                            onTap: () {
+                              // Tindakan yang ingin Anda jalankan saat tombol ditekan
+                            },
+                            borderRadius: BorderRadius.circular(12),
+                            child: Ink(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 25,
+                                  horizontal:
+                                      20), // Sesuaikan padding sesuai kebutuhan
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: const Color(0xFFDCE1E8),
+                                  width: 1,
+                                ),
+                              ),
+                              child: const Row(
+                                mainAxisSize: MainAxisSize
+                                    .min, // Memastikan tombol hanya mengambil ruang yang dibutuhkan
+                                children: [
+                                  FaIcon(
+                                    FontAwesomeIcons.google,
+                                    color: Color(0xFF3D4966),
+                                  ),
+                                  SizedBox(
+                                      width: 10), // Jarak antara ikon dan teks
+                                  Text(
+                                    'Sign In with Google',
+                                    style: titleHeader,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 0.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Don’t have an account? ',
+                              style: pjsSemiBold16,
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pushNamed('/login');
+                              },
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Colors.transparent),
+                              child: const Text(
+                                'Sign Up',
+                                style: pjsExtraBold16RedUnderlined,
+                              ),
+                            )
+                          ],
                         ),
                       ),
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

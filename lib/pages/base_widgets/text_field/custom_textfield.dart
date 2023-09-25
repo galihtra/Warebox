@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:warebox/utils/warebox_icon_icons.dart';
 
 import '../../../utils/custom_themes.dart';
-
-
 
 extension EmailValidator on String {
   bool isValidEmail() {
@@ -29,6 +28,7 @@ class CustomTextField extends StatelessWidget {
   final bool isBorder;
   final TextAlign? textAlign;
   final bool isEnable;
+  final Icon? prefixIcon;
 
   const CustomTextField({
     Key? key,
@@ -47,6 +47,7 @@ class CustomTextField extends StatelessWidget {
     this.isBorder = false,
     this.textAlign,
     this.isEnable = true,
+    this.prefixIcon,
   }) : super(key: key);
 
   @override
@@ -60,14 +61,14 @@ class CustomTextField extends StatelessWidget {
         color: Theme.of(context).highlightColor,
         borderRadius: isPhoneNumber
             ? const BorderRadius.only(
-                topRight: Radius.circular(6), bottomRight: Radius.circular(6))
-            : BorderRadius.circular(6),
-        boxShadow: [
+                topRight: Radius.circular(12), bottomRight: Radius.circular(12))
+            : BorderRadius.circular(12),
+        boxShadow: const [
           BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
+              color: Colors.transparent,
               spreadRadius: 1,
               blurRadius: 3,
-              offset: const Offset(0, 1)) // changes position of shadow
+              offset: Offset(0, 1)) // changes position of shadow
         ],
       ),
       child: TextFormField(
@@ -105,18 +106,34 @@ class CustomTextField extends StatelessWidget {
         },
         decoration: InputDecoration(
           hintText: hintText ?? '',
-          filled: fillColor != null,
-          fillColor: fillColor,
+          filled: true,
+          fillColor: Colors.white,
           contentPadding:
               const EdgeInsets.symmetric(vertical: 12.0, horizontal: 15),
           isDense: true,
           counterText: '',
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).primaryColor)),
-          hintStyle:
-              titilliumRegular.copyWith(color: Theme.of(context).hintColor),
+            borderSide: const BorderSide(
+              color: Color(0xFF2E9496),
+              width: 2,
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          hintStyle: pjsSemiBold16.copyWith(color: Theme.of(context).hintColor),
           errorStyle: const TextStyle(height: 1.5),
           border: InputBorder.none,
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: Color(0x00000000),
+              width: 2,
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          prefixIcon: const Icon(
+            WareboxIcon.email,
+            color: Colors.black,
+            size: 20,
+          ),
         ),
       ),
     );
