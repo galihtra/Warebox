@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:warebox/pages/getstarted/getstarted_page.dart';
 import 'package:warebox/pages/splash/widgets/splash_painter.dart';
 import 'package:warebox/utils/custom_themes.dart';
 import 'package:warebox/utils/dimensions.dart';
 import 'dart:async';
-import 'package:warebox/pages/auth/sign_in_page.dart';
 
 import '../../../utils/color_resources.dart';
 import '../../../utils/images.dart';
@@ -26,7 +26,7 @@ class SplashScreenState extends State<SplashPage> {
       const Duration(seconds: 2),
       () => Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const LoginPage(),
+          builder: (context) => const GetStartedPage(),
         ),
       ),
     );
@@ -41,6 +41,7 @@ class SplashScreenState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
+        key: _globalKey,
         clipBehavior: Clip.none,
         children: [
           Container(

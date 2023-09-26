@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:warebox/pages/auth/sign_in_page.dart';
+import 'package:warebox/pages/auth/sign_up_page.dart';
 import 'package:warebox/pages/splash/splash_page.dart';
 
 void main() {
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => const LoginPage(),
+        '/register': (BuildContext context) => const RegisterPage(),
       },
     );
   }

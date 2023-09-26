@@ -8,22 +8,22 @@ import '../../utils/dimensions.dart';
 import '../base_widgets/text_field/custom_password_textfield.dart';
 import '../base_widgets/text_field/custom_textfield.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   TextEditingController? _emailController;
   TextEditingController? _passwordController;
-  GlobalKey<FormState>? _formKeyLogin;
+  GlobalKey<FormState>? _formKeyRegister;
 
   @override
   void initState() {
     super.initState();
-    _formKeyLogin = GlobalKey<FormState>();
+    _formKeyRegister = GlobalKey<FormState>();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
   }
@@ -84,23 +84,15 @@ class _LoginPageState extends State<LoginPage> {
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Sign In', style: extraBold),
+                    Text('Sign Up', style: extraBold),
                   ],
                 ),
-              ),
-              const SizedBox(height: 15),
-              Container(
-                alignment: Alignment.topLeft,
-                margin: const EdgeInsets.only(left: 5, right: 5),
-                child: const Text(
-                    'Sign in and get your space personalized \nwith our Warehouse.',
-                    style: titleHeader),
               ),
               const SizedBox(height: 30),
               Container(
                 alignment: Alignment.topLeft,
                 child: Form(
-                  key: _formKeyLogin,
+                  key: _formKeyRegister,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -141,6 +133,24 @@ class _LoginPageState extends State<LoginPage> {
                           controller: _passwordController,
                         ),
                       ),
+                      const SizedBox(height: 20),
+                      Container(
+                        margin: const EdgeInsets.only(left: 5, right: 5),
+                        child: const Text(
+                          'Confirm Password',
+                          style: titleHeader2,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        margin: const EdgeInsets.only(left: 5, right: 5),
+                        child: CustomPasswordTextField(
+                          hintTxt: 'Confirm Password',
+                          textInputAction: TextInputAction.done,
+                          focusNode: _passNode,
+                          controller: _passwordController,
+                        ),
+                      ),
                       Container(
                         margin: const EdgeInsets.only(
                           right: Dimensions.marginSizeSmall,
@@ -157,20 +167,10 @@ class _LoginPageState extends State<LoginPage> {
                                   onChanged: (val) {},
                                 ),
                                 const Text(
-                                  'Remember Me',
+                                  'By continuing you accept our Privacy Policy and\nTerm of Use',
                                   style: titilliumRegular,
                                 ),
                               ],
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: Text(
-                                'Forgot Password',
-                                style: titilliumRegular.copyWith(
-                                  color:
-                                      ColorResources.getLightSkyBlue(context),
-                                ),
-                              ),
                             ),
                           ],
                         ),
@@ -192,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'Sign In',
+                                'Sign Up',
                                 style: pjsExtraBold20,
                               ),
                               SizedBox(width: 10),
@@ -271,7 +271,7 @@ class _LoginPageState extends State<LoginPage> {
                                   SizedBox(
                                       width: 10), // Jarak antara ikon dan teks
                                   Text(
-                                    'Sign In with Google',
+                                    'Sign Up with Google',
                                     style: titleHeader,
                                   ),
                                 ],
@@ -287,17 +287,17 @@ class _LoginPageState extends State<LoginPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Text(
-                              'Don’t have an account? ',
+                              'Already have an account? ',
                               style: pjsSemiBold16,
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.of(context).pushNamed('/register');
+                                Navigator.of(context).pushNamed('/login');
                               },
                               style: TextButton.styleFrom(
                                   backgroundColor: Colors.transparent),
                               child: const Text(
-                                'Sign Up',
+                                'Sign In',
                                 style: pjsExtraBold16RedUnderlined,
                               ),
                             )

@@ -44,6 +44,13 @@ const pjsSemiBold16 = TextStyle(
   color: Color(0xFF3D4966),
 );
 
+const pjsExtraBold30Grey = TextStyle(
+  fontFamily: 'Plus Jakarta Sans',
+  fontSize: Dimensions.fontSizeExtraLarge,
+  fontWeight: FontWeight.w800,
+  color: Color(0xFF3D4966),
+);
+
 const pjsExtraBold20 = TextStyle(
   fontFamily: 'Plus Jakarta Sans',
   fontSize: 20,
@@ -64,4 +71,11 @@ const pjsExtraBold16RedUnderlined = TextStyle(
   fontSize: 16,
   fontWeight: FontWeight.w800,
   decoration: TextDecoration.underline,
+);
+
+const pjsExtraBold30 = TextStyle(
+  fontFamily: 'Plus Jakarta Sans',
+  color: Colors.black,
+  fontWeight: FontWeight.w800,
+  fontSize: 30,
 );
