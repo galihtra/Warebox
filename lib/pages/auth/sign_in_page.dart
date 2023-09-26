@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:warebox/utils/custom_themes.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../bloc/login/login_bloc.dart';
+import '../../data/datasources/auth_local_datasource.dart';
+import '../../data/models/request/login_request_model.dart';
 import '../../utils/color_resources.dart';
 import '../../utils/dimensions.dart';
 import '../base_widgets/text_field/custom_password_textfield.dart';
 import '../base_widgets/text_field/custom_textfield.dart';
+import '../dashboard/dashboard_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -38,32 +42,32 @@ class _LoginPageState extends State<LoginPage> {
   final FocusNode _emailNode = FocusNode();
   final FocusNode _passNode = FocusNode();
 
-  // void loginUser() async {
-  //   if (_formKeyLogin!.currentState!.validate()) {
-  //     _formKeyLogin!.currentState!.save();
+  void loginUser() async {
+    if (_formKeyLogin!.currentState!.validate()) {
+      _formKeyLogin!.currentState!.save();
 
-  //     String email = _emailController!.text.trim();
-  //     String password = _passwordController!.text.trim();
+      String email = _emailController!.text.trim();
+      String password = _passwordController!.text.trim();
 
-  //     if (email.isEmpty) {
-  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //         content: Text('Email'),
-  //         backgroundColor: Colors.red,
-  //       ));
-  //     } else if (password.isEmpty) {
-  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //         content: Text('Password'),
-  //         backgroundColor: Colors.red,
-  //       ));
-  //     } else {
-  //       final model = LoginRequestModel(
-  //         email: email,
-  //         password: password,
-  //       );
-  //       // context.read<LoginBloc>().add(LoginEvent.login(model));
-  //     }
-  //   }
-  // }
+      if (email.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Email'),
+          backgroundColor: Colors.red,
+        ));
+      } else if (password.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Password'),
+          backgroundColor: Colors.red,
+        ));
+      } else {
+        final model = LoginRequestModel(
+          email: email,
+          password: password,
+        );
+        context.read<LoginBloc>().add(LoginEvent.login(model));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -168,27 +172,58 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 10),
                       Container(
-                        alignment: Alignment.center,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF2E9496),
-                            minimumSize: const Size(0, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Sign In',
-                                style: pjsExtraBold20,
+                        margin: const EdgeInsets.only(
+                            left: 20, right: 20, bottom: 20, top: 30),
+                        child: BlocConsumer<LoginBloc, LoginState>(
+                          listener: (context, state) {
+                            state.maybeWhen(
+                              orElse: () {},
+                              loaded: (data) async {
+                                await AuthLocalDatasource().saveAuthData(data);
+                                Navigator.pushAndRemoveUntil(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return DashboardPage();
+                                }), (route) => false);
+                              },
+                              error: (message) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(message),
+                                  backgroundColor: Colors.red,
+                                ));
+                              },
+                            );
+                          },
+                          builder: (context, state) {
+                            return state.maybeWhen(
+                              orElse: () {
+                                return ElevatedButton(
+                                  onPressed: loginUser,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFF2E9496),
+                                    minimumSize: const Size(0, 50),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Sign In',
+                                        style: pjsExtraBold20,
+                                      ),
+                                      SizedBox(width: 10),
+                                      Icon(Icons.person_2_outlined)
+                                    ],
+                                  ),
+                                );
+                              },
+                              loading: () => const Center(
+                                child: CircularProgressIndicator(),
                               ),
-                              SizedBox(width: 10),
-                              Icon(Icons.person_2_outlined)
-                            ],
-                          ),
+                            );
+                          },
                         ),
                       ),
                       const SizedBox(height: 50),
