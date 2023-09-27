@@ -106,6 +106,7 @@ class ColorResources {
   }
 
   static const Color black = Color(0xff090d1d);
+  static const Color wareboxTosca = Color(0xff2E9496);
   static const Color white = Color(0xffFFFFFF);
   static const Color lightSkyBlue = Color(0xff8DBFF6);
   static const Color harlequin = Color(0xff3FCC01);
