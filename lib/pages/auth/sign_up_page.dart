@@ -1,73 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:warebox/pages/auth/sign_up_page.dart';
+import 'package:warebox/pages/auth/sign_in_page.dart';
 import 'package:warebox/utils/custom_themes.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../bloc/login/login_bloc.dart';
+import '../../bloc/register/register_bloc.dart';
 import '../../data/datasources/auth_local_datasource.dart';
-import '../../data/models/request/login_request_model.dart';
+import '../../data/models/request/register_request_model.dart';
 import '../../utils/color_resources.dart';
 import '../../utils/dimensions.dart';
+import '../base_widgets/text_field/custom_name_textfield.dart';
 import '../base_widgets/text_field/custom_password_textfield.dart';
 import '../base_widgets/text_field/custom_textfield.dart';
 import '../dashboard/dashboard_page.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  TextEditingController? _emailController;
-  TextEditingController? _passwordController;
-  GlobalKey<FormState>? _formKeyLogin;
+class _RegisterPageState extends State<RegisterPage> {
+  final TextEditingController _firstNameController = TextEditingController();
+
+  final TextEditingController _emailController = TextEditingController();
+
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  GlobalKey<FormState>? _formKey;
+
+  final FocusNode _fNameFocus = FocusNode();
+  final FocusNode _lNameFocus = FocusNode();
+  final FocusNode _emailFocus = FocusNode();
+  final FocusNode _phoneFocus = FocusNode();
+  final FocusNode _passwordFocus = FocusNode();
+  final FocusNode _confirmPasswordFocus = FocusNode();
+
+  bool isEmailVerified = false;
+
+  addUser() async {
+    if (_formKey!.currentState!.validate()) {
+      _formKey!.currentState!.save();
+      final model = RegisterRequestModel(
+        email: _emailController.text,
+        password: _passwordController.text,
+        name: _firstNameController.text,
+      );
+      context.read<RegisterBloc>().add(RegisterEvent.register(model));
+      isEmailVerified = true;
+    } else {
+      isEmailVerified = false;
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _formKeyLogin = GlobalKey<FormState>();
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
-  }
 
-  @override
-  void dispose() {
-    _emailController!.dispose();
-    _passwordController!.dispose();
-    super.dispose();
-  }
-
-  final FocusNode _emailNode = FocusNode();
-  final FocusNode _passNode = FocusNode();
-
-  void loginUser() async {
-    if (_formKeyLogin!.currentState!.validate()) {
-      _formKeyLogin!.currentState!.save();
-
-      String email = _emailController!.text.trim();
-      String password = _passwordController!.text.trim();
-
-      if (email.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Email'),
-          backgroundColor: Colors.red,
-        ));
-      } else if (password.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Password'),
-          backgroundColor: Colors.red,
-        ));
-      } else {
-        final model = LoginRequestModel(
-          email: email,
-          password: password,
-        );
-        context.read<LoginBloc>().add(LoginEvent.login(model));
-      }
-    }
+    _formKey = GlobalKey<FormState>();
   }
 
   @override
@@ -89,27 +82,41 @@ class _LoginPageState extends State<LoginPage> {
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Sign In', style: extraBold),
+                    Text('Sign Up', style: extraBold),
                   ],
                 ),
-              ),
-              const SizedBox(height: 15),
-              Container(
-                alignment: Alignment.topLeft,
-                margin: const EdgeInsets.only(left: 5, right: 5),
-                child: const Text(
-                    'Sign in and get your space personalized \nwith our Warehouse.',
-                    style: titleHeader),
               ),
               const SizedBox(height: 30),
               Container(
                 alignment: Alignment.topLeft,
                 child: Form(
-                  key: _formKeyLogin,
+                  key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      Container(
+                        margin: const EdgeInsets.only(left: 5, right: 5),
+                        child: const Text(
+                          'Name',
+                          style: titleHeader2,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        margin: const EdgeInsets.only(left: 5, right: 5),
+                        child: CustomNameTextField(
+                          hintText: 'Name',
+                          textInputType: TextInputType.name,
+                          focusNode: _fNameFocus,
+                          nextNode: _lNameFocus,
+                          isPhoneNumber: false,
+                          capitalization: TextCapitalization.words,
+                          controller: _firstNameController,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      // Email
                       Container(
                         margin: const EdgeInsets.only(left: 5, right: 5),
                         child: const Text(
@@ -118,24 +125,52 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      CustomTextField(
-                        hintText: 'youremail@gmail.com',
-                        focusNode: _emailNode,
-                        nextNode: _passNode,
-                        textInputType: TextInputType.emailAddress,
-                        controller: _emailController,
+                      Container(
+                        margin: const EdgeInsets.only(left: 5, right: 5),
+                        child: CustomTextField(
+                          hintText: 'youremail@gmail.com',
+                          focusNode: _emailFocus,
+                          nextNode: _phoneFocus,
+                          textInputType: TextInputType.emailAddress,
+                          controller: _emailController,
+                        ),
                       ),
                       const SizedBox(height: 20),
-                      const Text(
-                        'Password',
-                        style: titleHeader2,
+                      Container(
+                        margin: const EdgeInsets.only(left: 5, right: 5),
+                        child: const Text(
+                          'Password',
+                          style: titleHeader2,
+                        ),
                       ),
                       const SizedBox(height: 10),
-                      CustomPasswordTextField(
-                        hintTxt: 'Password',
-                        textInputAction: TextInputAction.done,
-                        focusNode: _passNode,
-                        controller: _passwordController,
+                      Container(
+                        margin: const EdgeInsets.only(left: 5, right: 5),
+                        child: CustomPasswordTextField(
+                          hintTxt: 'Password',
+                          textInputAction: TextInputAction.done,
+                          focusNode: _passwordFocus,
+                          controller: _passwordController,
+                          nextNode: _confirmPasswordFocus,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        margin: const EdgeInsets.only(left: 5, right: 5),
+                        child: const Text(
+                          'Confirm Password',
+                          style: titleHeader2,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        margin: const EdgeInsets.only(left: 5, right: 5),
+                        child: CustomPasswordTextField(
+                          hintTxt: 'Confirm Password',
+                          textInputAction: TextInputAction.done,
+                          focusNode: _confirmPasswordFocus,
+                          controller: _confirmPasswordController,
+                        ),
                       ),
                       Container(
                         margin: const EdgeInsets.only(
@@ -153,20 +188,10 @@ class _LoginPageState extends State<LoginPage> {
                                   onChanged: (val) {},
                                 ),
                                 const Text(
-                                  'Remember Me',
+                                  'By continuing you accept our Privacy Policy and\nTerm of Use',
                                   style: titilliumRegular,
                                 ),
                               ],
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: Text(
-                                'Forgot Password',
-                                style: titilliumRegular.copyWith(
-                                  color:
-                                      ColorResources.getLightSkyBlue(context),
-                                ),
-                              ),
                             ),
                           ],
                         ),
@@ -174,11 +199,20 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 10),
                       Container(
                         margin: const EdgeInsets.only(
-                            left: 20, right: 20, bottom: 20, top: 30),
-                        child: BlocConsumer<LoginBloc, LoginState>(
+                          left: Dimensions.marginSizeLarge,
+                          right: Dimensions.marginSizeLarge,
+                          bottom: Dimensions.marginSizeLarge,
+                          top: Dimensions.marginSizeLarge,
+                        ),
+                        child: BlocListener<RegisterBloc, RegisterState>(
                           listener: (context, state) {
                             state.maybeWhen(
                               orElse: () {},
+                              error: (message) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(message)),
+                                );
+                              },
                               loaded: (data) async {
                                 await AuthLocalDatasource().saveAuthData(data);
                                 Navigator.pushAndRemoveUntil(context,
@@ -186,48 +220,44 @@ class _LoginPageState extends State<LoginPage> {
                                   return DashboardPage();
                                 }), (route) => false);
                               },
-                              error: (message) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content: Text(message),
-                                  backgroundColor: Colors.red,
-                                ));
-                              },
                             );
                           },
-                          builder: (context, state) {
-                            return state.maybeWhen(
-                              orElse: () {
-                                return ElevatedButton(
-                                  onPressed: loginUser,
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        ColorResources.wareboxTosca,
-                                    minimumSize: const Size(0, 50),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                  ),
-                                  child: const Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Sign In',
-                                        style: pjsExtraBold20,
+                          child: BlocBuilder<RegisterBloc, RegisterState>(
+                            builder: (context, state) {
+                              return state.maybeWhen(
+                                orElse: () {
+                                  return ElevatedButton(
+                                    onPressed: addUser,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFF2E9496),
+                                      minimumSize: const Size(0, 50),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
-                                      SizedBox(width: 10),
-                                      Icon(Icons.person_2_outlined)
-                                    ],
-                                  ),
-                                );
-                              },
-                              loading: () => const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            );
-                          },
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Sign Up',
+                                          style: pjsExtraBold20,
+                                        ),
+                                        SizedBox(width: 10),
+                                        Icon(Icons.person_2_outlined),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                loading: () => const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
+
                       const SizedBox(height: 50),
                       Stack(
                         alignment: const AlignmentDirectional(0, 0),
@@ -298,7 +328,7 @@ class _LoginPageState extends State<LoginPage> {
                                   SizedBox(
                                       width: 10), // Jarak antara ikon dan teks
                                   Text(
-                                    'Sign In with Google',
+                                    'Sign Up with Google',
                                     style: titleHeader,
                                   ),
                                 ],
@@ -314,7 +344,7 @@ class _LoginPageState extends State<LoginPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Text(
-                              'Don’t have an account? ',
+                              'Already have an account? ',
                               style: pjsSemiBold16,
                             ),
                             TextButton(
@@ -323,7 +353,7 @@ class _LoginPageState extends State<LoginPage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return const RegisterPage();
+                                      return const LoginPage();
                                     },
                                   ),
                                 );
@@ -331,7 +361,7 @@ class _LoginPageState extends State<LoginPage> {
                               style: TextButton.styleFrom(
                                   backgroundColor: Colors.transparent),
                               child: const Text(
-                                'Sign Up',
+                                'Sign In',
                                 style: pjsExtraBold16RedUnderlined,
                               ),
                             )
